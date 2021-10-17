@@ -8,9 +8,9 @@ module.exports = {
         try {
             req.body.password = await bcrypt.hash(req.body.password, 10);
             const reg = await models.Usuario.create(req.body);
-            res.status(404).json(reg);
+            res.status(200).json(reg);
         } catch (e) {
-            res.status(404).send({
+            res.status(500).send({
                 message: 'Ocurrió un error'
             });
             next(e);
@@ -37,9 +37,9 @@ module.exports = {
         try {
             let valor = req.query.valor;
             const reg = await models.Usuario.findAll();
-            res.status(404).json(reg);
+            res.status(200).json(reg);
         } catch (e) {
-            res.status(404).send({
+            res.status(500).send({
                 message: 'Ocurrió un error'
             });
             next(e);
@@ -54,9 +54,9 @@ module.exports = {
             }
             const reg = await models.Usuario.update(req.body, { where: { id: req.body.id } });
             console.log(req)
-            res.status(404).json(reg);
+            res.status(200).json(reg);
         } catch (e) {
-            res.status(404).send({
+            res.status(500).send({
                 message: 'Ocurrió un error'
             });
             next(e);
@@ -76,9 +76,9 @@ module.exports = {
     activate: async(req, res, next) => {
         try {
             const reg = await models.Usuario.update({ estado: 1 }, { where: { id: req.body.id } });
-            res.status(404).json(reg);
+            res.status(200).json(reg);
         } catch (e) {
-            res.status(404).send({
+            res.status(500).send({
                 message: 'Ocurrió un error'
             });
             next(e);
@@ -87,9 +87,9 @@ module.exports = {
     deactivate: async(req, res, next) => {
         try {
             const reg = await models.Usuario.update({ estado: 0 }, { where: { id: req.body.id } });
-            res.status(404).json(reg);
+            res.status(200).json(reg);
         } catch (e) {
-            res.status(404).send({
+            res.status(500).send({
                 message: 'Ocurrió un error'
             });
             next(e);
@@ -104,9 +104,9 @@ module.exports = {
                 if (match) {
                     console.log(user.rol);
                     let tokenReturn = await token.encode(user.id, user.rol);
-                    res.status(404).json({ user, tokenReturn });
+                    res.status(200).json({ user, tokenReturn });
                 } else {
-                    res.status(404).send({
+                    res.status(401).send({
                         message: 'Password Incorrecto'
                     });
                 }
@@ -116,7 +116,7 @@ module.exports = {
                 });
             }
         } catch (e) {
-            res.status(404).send({
+            res.status(500).send({
                 message: 'Ocurrió un error'
             });
             next(e);
